@@ -4,7 +4,7 @@ import path from "path"
 import cookieParser from "cookie-parser"
 
 const app = express()
-const port = 3030
+const port = process.env.PORT || 3030
 
 const corsOptions = {
   origin: [
