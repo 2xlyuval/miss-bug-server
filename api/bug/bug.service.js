@@ -120,6 +120,7 @@ function _sortBugs(bugs, sortBy, ascending = true) {
       ascending ? a.severity - b.severity : b.severity - a.severity
     )
   } else if (sortBy === "createdAt") {
+    ascending = false
     bugs.sort((a, b) =>
       ascending ? a.createdAt - b.createdAt : b.createdAt - a.createdAt
     )
