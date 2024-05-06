@@ -1,7 +1,6 @@
 import fs from "fs"
 
 export const utilService = {
-  download,
   readJsonFile,
   makeId,
 }
