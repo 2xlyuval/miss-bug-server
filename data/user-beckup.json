@@ -1,0 +1,79 @@
+[
+  {
+    "_id": "u101",
+    "fullName": "Muki Ja",
+    "userName": "muki",
+    "password": "muki1234",
+    "score": 100
+  },
+  {
+    "_id": "u102",
+    "fullName": "John Smith",
+    "userName": "john",
+    "password": "john1234",
+    "score": 95
+  },
+  {
+    "_id": "u103",
+    "fullName": "Alice Johnson",
+    "userName": "alice",
+    "password": "alice1234",
+    "score": 90
+  },
+  {
+    "_id": "u104",
+    "fullName": "Bob Williams",
+    "userName": "bob",
+    "password": "bob1234",
+    "score": 85
+  },
+  {
+    "_id": "u105",
+    "fullName": "Emily Brown",
+    "userName": "emily",
+    "password": "emily1234",
+    "score": 80
+  },
+  {
+    "_id": "u106",
+    "fullName": "Michael Davis",
+    "userName": "michael",
+    "password": "michael1234",
+    "score": 75
+  },
+  {
+    "_id": "u107",
+    "fullName": "Emma Wilson",
+    "userName": "emma",
+    "password": "emma1234",
+    "score": 70
+  },
+  {
+    "_id": "u108",
+    "fullName": "Sophia Martinez",
+    "userName": "sophia",
+    "password": "sophia1234",
+    "score": 65
+  },
+  {
+    "_id": "u109",
+    "fullName": "James Taylor",
+    "userName": "james",
+    "password": "james1234",
+    "score": 60
+  },
+  {
+    "_id": "u110",
+    "fullName": "Olivia Rodriguez",
+    "userName": "olivia",
+    "password": "olivia1234",
+    "score": 55
+  },
+  {
+    "_id": "u111",
+    "fullName": "William Lopez",
+    "userName": "william",
+    "password": "william1234",
+    "score": 50
+  }
+]
