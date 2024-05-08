@@ -64,17 +64,18 @@
     },
     {
         "fullName": "Yuval Mor",
-        "userName": "yuval",
-        "password": "yuval1234",
-        "score": 98,
-        "_id": "dDMpF1",
-        "createdAt": 1714931515182
+        "userName": "YuvalM",
+        "password": "$2b$10$/h2cZxRxW0.5oPMUE82xy.K8Jn0c6Hk8RdnGoeGtm8hMVQ9z62WLC",
+        "_id": "6iieS1",
+        "createdAt": 1715191056253,
+        "score": 0
     },
     {
         "fullName": "Alon Mor",
-        "userName": "alon1234",
-        "score": 95,
-        "_id": "ONcRRt",
-        "createdAt": 1714983711608
+        "userName": "AlonM",
+        "password": "$2b$10$IHpXoQ.D6yLn56EUmHcKouPQhR2gHEQtFvrjbHM8QwLfb6JAuYJYu",
+        "_id": "uX1e0w",
+        "createdAt": 1715191556669,
+        "score": 0
     }
 ]

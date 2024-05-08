@@ -6,6 +6,7 @@ const PAGE_SIZE = 2
 export const userService = {
   query,
   getById,
+  getByUserName,
   remove,
   save,
 }
@@ -57,6 +58,15 @@ async function getById(userId) {
   }
 }
 
+async function getByUserName(userName) {
+  try {
+    const user = users.find((user) => user.userName === userName)
+    return user
+  } catch (error) {
+    throw error
+  }
+}
+
 async function remove(userId) {
   try {
     const userIdx = users.findIndex((user) => user._id === userId)
@@ -76,6 +86,7 @@ async function save(userToSave) {
     } else {
       userToSave._id = utilService.makeId()
       userToSave.createdAt = Date.now()
+      userToSave.score = 0
       users.push(userToSave)
     }
     await _saveUsersToFile()

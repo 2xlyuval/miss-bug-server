@@ -5,7 +5,11 @@
     "title": "UI Alignment Issue on Profile Page",
     "severity": 1,
     "description": "The profile picture appears misaligned on smaller screen sizes.",
-    "labels": ["UI", "design", "alignment", "low severity"]
+    "labels": ["UI", "design", "alignment", "low severity"],
+    "creator": {
+      "_id": "u103",
+      "fullName": "Alice Johnson"
+    }
   },
   {
     "_id": "ouNhdF",
@@ -13,7 +17,11 @@
     "title": "Spelling Mistake in Error Message",
     "severity": 2,
     "description": "There is a typographical error in the error message displayed during login.",
-    "labels": ["UI", "text", "error message", "low severity"]
+    "labels": ["UI", "text", "error message", "low severity"],
+    "creator": {
+      "_id": "u104",
+      "fullName": "Bob Smith"
+    }
   },
   {
     "_id": "hCnd1V",
@@ -21,7 +29,11 @@
     "title": "Inactive Button on Settings Page",
     "severity": 2,
     "description": "The 'Save Changes' button remains inactive even after making modifications in the settings.",
-    "labels": ["UI", "interaction", "button", "low severity"]
+    "labels": ["UI", "interaction", "button", "low severity"],
+    "creator": {
+      "_id": "u105",
+      "fullName": "Charlie Brown"
+    }
   },
   {
     "_id": "0MFLpQ",
@@ -29,7 +41,11 @@
     "title": "Incorrect Tooltip Displayed on Hover",
     "severity": 3,
     "description": "The tooltip displayed on hovering over an icon does not match its functionality.",
-    "labels": ["UI", "tooltip", "interaction", "low severity"]
+    "labels": ["UI", "tooltip", "interaction", "low severity"],
+    "creator": {
+      "_id": "u104",
+      "fullName": "Bob Smith"
+    }
   },
   {
     "_id": "ilvaIM",
@@ -37,7 +53,11 @@
     "title": "Broken Link in Help Section",
     "severity": 2,
     "description": "One of the links in the help section redirects to a non-existent page.",
-    "labels": ["UI", "help", "link", "low severity"]
+    "labels": ["UI", "help", "link", "low severity"],
+    "creator": {
+      "_id": "u104",
+      "fullName": "Bob Smith"
+    }
   },
   {
     "_id": "vzZl5H",
@@ -45,7 +65,11 @@
     "title": "Cross-Site Scripting (XSS) Vulnerability in Forum",
     "severity": 5,
     "description": "An attacker can inject malicious scripts into the forum pages, leading to potential data theft or manipulation of user sessions.",
-    "labels": ["security", "web application", "XSS", "vulnerability"]
+    "labels": ["security", "web application", "XSS", "vulnerability"],
+    "creator": {
+      "_id": "u106",
+      "fullName": "David Lee"
+    }
   },
   {
     "_id": "ouNhdG",
@@ -53,7 +77,11 @@
     "title": "Buffer Overflow in Network Service",
     "severity": 6,
     "description": "This bug enables attackers to overwrite adjacent memory locations, potentially leading to system crashes or remote code execution.",
-    "labels": ["security", "networking", "buffer overflow", "vulnerability"]
+    "labels": ["security", "networking", "buffer overflow", "vulnerability"],
+    "creator": {
+      "_id": "u107",
+      "fullName": "Eve Wilson"
+    }
   },
   {
     "_id": "hCnd1W",
@@ -61,7 +89,11 @@
     "title": "SQL Injection Vulnerability in E-commerce Platform",
     "severity": 7,
     "description": "Attackers can manipulate SQL queries to access, modify, or delete sensitive data stored in the database, compromising user privacy and integrity.",
-    "labels": ["security", "SQL injection", "vulnerability", "e-commerce"]
+    "labels": ["security", "SQL injection", "vulnerability", "e-commerce"],
+    "creator": {
+      "_id": "u107",
+      "fullName": "Eve Wilson"
+    }
   },
   {
     "_id": "0MFLpR",
@@ -69,7 +101,11 @@
     "title": "Denial-of-Service (DoS) Vulnerability in DNS Server",
     "severity": 6,
     "description": "This bug allows attackers to flood the DNS server with requests, rendering it unable to respond to legitimate queries and disrupting network services.",
-    "labels": ["security", "networking", "DoS", "vulnerability"]
+    "labels": ["security", "networking", "DoS", "vulnerability"],
+    "creator": {
+      "_id": "u107",
+      "fullName": "Eve Wilson"
+    }
   },
   {
     "_id": "ilvaIN",
@@ -82,6 +118,10 @@
       "operating system",
       "privilege escalation",
       "vulnerability"
-    ]
+    ],
+    "creator": {
+      "_id": "u106",
+      "fullName": "David Lee"
+    }
   }
 ]
