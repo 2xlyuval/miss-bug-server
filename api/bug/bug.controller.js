@@ -25,10 +25,9 @@ export async function removeBug(req, res) {
   }
 }
 
-//Q - Update only updatable fields
-//Q - Why do i need to add id in the body? and not take from the params?
 export async function updateBug(req, res) {
-  const { _id, title, severity, description } = req.body
+  const { title, severity, description } = req.body
+  const bugId = req.params.bugId
 
   try {
     const loggedinUser = authService.validateLoginToken(req.cookies.loginToken)
@@ -36,7 +35,7 @@ export async function updateBug(req, res) {
       return res.status(401).send("Unauthorize - can not update bug")
 
     const bugToSave = {
-      _id,
+      _id: bugId,
       title,
       severity: +severity,
       description,
