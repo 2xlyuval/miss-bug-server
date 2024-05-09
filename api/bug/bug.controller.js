@@ -1,3 +1,4 @@
+import { authService } from "../auth/auth.service.js"
 import { bugService } from "./bug.service.js"
 
 export async function getBugs(req, res) {
@@ -13,6 +14,9 @@ export async function getBugs(req, res) {
 
 export async function removeBug(req, res) {
   try {
+    const loggedinUser = authService.validateLoginToken(req.cookies.loginToken)
+    if (!loggedinUser)
+      return res.status(401).send("Unauthorize - can not remove bug")
     const bugId = req.params.bugId
     await bugService.remove(bugId)
     res.send("deleted")
@@ -21,17 +25,27 @@ export async function removeBug(req, res) {
   }
 }
 
+//Q - Update only updatable fields
+//Q - Why do i need to add id in the body? and not take from the params?
 export async function updateBug(req, res) {
-  // const { _id, title, severity, description } = req.body
-  // const bugToSave = {
-  //   _id,
-  //   title,
-  //   severity: +severity,
-  //   description,
-  // }
-  const bugToSave = req.body
-  bugToSave.severity = +bugToSave.severity
+  const { _id, title, severity, description } = req.body
+
   try {
+    const loggedinUser = authService.validateLoginToken(req.cookies.loginToken)
+    if (!loggedinUser)
+      return res.status(401).send("Unauthorize - can not update bug")
+
+    const bugToSave = {
+      _id,
+      title,
+      severity: +severity,
+      description,
+      creator: {
+        _id: loggedinUser._id,
+        fullName: loggedinUser.fullName,
+      },
+    }
+
     const savedBug = await bugService.save(bugToSave)
     res.send(savedBug)
   } catch (error) {
@@ -41,12 +55,22 @@ export async function updateBug(req, res) {
 
 export async function addBug(req, res) {
   const { title, severity, description } = req.body
-  const bugToSave = {
-    title,
-    severity,
-    description,
-  }
+
   try {
+    const loggedinUser = authService.validateLoginToken(req.cookies.loginToken)
+    if (!loggedinUser)
+      return res.status(401).send("Unauthorize - can not add bug")
+
+    const bugToSave = {
+      title,
+      severity: +severity,
+      description,
+      creator: {
+        _id: loggedinUser._id,
+        fullName: loggedinUser.fullName,
+      },
+    }
+
     const savedBug = await bugService.save(bugToSave)
     res.send(savedBug)
   } catch (error) {

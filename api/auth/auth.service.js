@@ -25,12 +25,11 @@ async function login(credentials) {
     throw new Error("Invalid username")
   }
 
-  console.log("user", user)
-
-  const match = await bcrypt.compare(password, user.password)
-  if (!match) {
-    throw new Error("Invalid username or password")
-  }
+  // un comment to validate password
+  // const match = await bcrypt.compare(password, user.password)
+  // if (!match) {
+  //   throw new Error("Invalid username or password")
+  // }
 
   const minUser = {
     _id: user._id,
