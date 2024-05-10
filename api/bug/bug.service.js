@@ -34,6 +34,12 @@ async function query(filterBy = {}) {
       )
     }
 
+    if (filterBy.createdBy) {
+      filteredBugs = filteredBugs.filter(
+        (bug) => bug.creator._id === filterBy.createdBy
+      )
+    }
+
     //sort by title / severity / createdAt
     if (filterBy.sortBy) {
       // if there is filterBy.ascending, convert it to boolean
