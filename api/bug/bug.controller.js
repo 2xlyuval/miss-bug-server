@@ -39,10 +39,6 @@ export async function updateBug(req, res) {
       title,
       severity: +severity,
       description,
-      creator: {
-        _id: loggedinUser._id,
-        fullName: loggedinUser.fullName,
-      },
     }
 
     const savedBug = await bugService.save(bugToSave, loggedinUser)

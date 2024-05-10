@@ -36,6 +36,7 @@ async function login(credentials) {
     fullName: user.fullName,
     userName: user.userName,
     score: user.score,
+    isAdmin: user.isAdmin,
   }
 
   return minUser

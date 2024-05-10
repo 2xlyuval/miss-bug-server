@@ -75,7 +75,7 @@ async function remove(bugId, loggedinUser) {
     if (bugIdx < 0) throw `Cant find bug with _id ${bugId}`
 
     const bug = bugs[bugIdx]
-    if (bug.creator._id !== loggedinUser._id)
+    if (!loggedinUser.isAdmin && bug.creator._id !== loggedinUser._id)
       throw "Unauthorized - cannot remove bug"
 
     bugs.splice(bugIdx, 1)
@@ -92,7 +92,7 @@ async function save(bugToSave, loggedinUser) {
       if (idx < 0) throw `Cant find bug with _id ${bugToSave._id}`
 
       const bug = bugs[idx]
-      if (bug.creator._id !== loggedinUser._id)
+      if (!loggedinUser.isAdmin && bug.creator._id !== loggedinUser._id)
         throw "Unauthorized - cannot edit bug"
 
       bugs[idx] = { ...bugs[idx], ...bugToSave }
