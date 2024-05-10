@@ -6,7 +6,7 @@
     "_id": "6iieS1",
     "createdAt": 1715191056253,
     "score": 90,
-    "isAdmin": true
+    "isAdmin": false
   },
   {
     "fullName": "Alon Mor",
@@ -25,5 +25,14 @@
     "createdAt": 1715280362719,
     "score": 70,
     "isAdmin": false
+  },
+  {
+    "fullName": "admin",
+    "userName": "admin",
+    "password": "admin",
+    "_id": "bwJ40i",
+    "createdAt": 1715280362719,
+    "score": 100,
+    "isAdmin": true
   }
 ]
