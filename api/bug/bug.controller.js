@@ -13,27 +13,27 @@ export async function getBugs(req, res) {
 }
 
 export async function removeBug(req, res) {
+  const { bugId } = req.params
+  const loggedinUser = authService.validateLoginToken(req.cookies.loginToken)
+  if (!loggedinUser)
+    return res.status(401).send("Not authenticated - can not remove bug")
+
   try {
-    const loggedinUser = authService.validateLoginToken(req.cookies.loginToken)
-    if (!loggedinUser)
-      return res.status(401).send("Unauthorize - can not remove bug")
-    const bugId = req.params.bugId
-    await bugService.remove(bugId)
-    res.send("deleted")
-  } catch (error) {
-    res.status(400).send(`Could'nt remove bug`)
+    await bugService.remove(bugId, loggedinUser)
+    res.send("bug deleted")
+  } catch (err) {
+    res.status(400).send(`Could'nt remove bug: ${err}`)
   }
 }
 
 export async function updateBug(req, res) {
   const { title, severity, description } = req.body
   const bugId = req.params.bugId
+  const loggedinUser = authService.validateLoginToken(req.cookies.loginToken)
+  if (!loggedinUser)
+    return res.status(401).send("Not authenticated - can not update bug")
 
   try {
-    const loggedinUser = authService.validateLoginToken(req.cookies.loginToken)
-    if (!loggedinUser)
-      return res.status(401).send("Unauthorize - can not update bug")
-
     const bugToSave = {
       _id: bugId,
       title,
@@ -45,32 +45,31 @@ export async function updateBug(req, res) {
       },
     }
 
-    const savedBug = await bugService.save(bugToSave)
+    const savedBug = await bugService.save(bugToSave, loggedinUser)
     res.send(savedBug)
-  } catch (error) {
-    res.status(400).send(`Could'nt save bug`)
+  } catch (err) {
+    res.status(400).send(`Could'nt save bug: ${err}`)
   }
 }
 
 export async function addBug(req, res) {
   const { title, severity, description } = req.body
+  const loggedinUser = authService.validateLoginToken(req.cookies.loginToken)
+  if (!loggedinUser)
+    return res.status(401).send("Unauthorize - can not add bug")
 
   try {
-    const loggedinUser = authService.validateLoginToken(req.cookies.loginToken)
-    if (!loggedinUser)
-      return res.status(401).send("Unauthorize - can not add bug")
-
     const bugToSave = {
       title,
       severity: +severity,
       description,
       creator: {
         _id: loggedinUser._id,
-        fullName: loggedinUser.fullName,
+        fullName: loggedinUser.useName,
       },
     }
 
-    const savedBug = await bugService.save(bugToSave)
+    const savedBug = await bugService.save(bugToSave, loggedinUser)
     res.send(savedBug)
   } catch (error) {
     res.status(400).send(`Could'nt save bug`)

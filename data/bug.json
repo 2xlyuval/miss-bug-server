@@ -68,23 +68,6 @@
         }
     },
     {
-        "_id": "vzZl5H",
-        "createdAt": 1713626844493,
-        "title": "Cross-Site Scripting (XSS) Vulnerability in Forum",
-        "severity": 5,
-        "description": "An attacker can inject malicious scripts into the forum pages, leading to potential data theft or manipulation of user sessions.",
-        "labels": [
-            "security",
-            "web application",
-            "XSS",
-            "vulnerability"
-        ],
-        "creator": {
-            "_id": "u106",
-            "fullName": "David Lee"
-        }
-    },
-    {
         "_id": "ouNhdG",
         "createdAt": 1713632016997,
         "title": "Buffer Overflow in Network Service",

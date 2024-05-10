@@ -8,7 +8,7 @@ export async function signup(req, res) {
 
     const user = await authService.login(credentials)
     const loginToken = authService.getLoginToken(user)
-    res.cookie("loginToken", loginToken)
+    res.cookie("loginToken", loginToken, { sameSite: "None", secure: true })
     res.json(user)
   } catch (err) {
     res.status(400).send({ error: "Fail to signup" + err })
@@ -22,7 +22,7 @@ export async function login(req, res) {
     const user = await authService.login(credentials)
     const loginToken = authService.getLoginToken(user)
 
-    res.cookie("loginToken", loginToken)
+    res.cookie("loginToken", loginToken, { sameSite: "None", secure: true })
     res.json(user)
   } catch (err) {
     res.status(400).send({ error: "Fail to login" + err })

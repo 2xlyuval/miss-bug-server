@@ -69,9 +69,15 @@ async function getById(bugId) {
   }
 }
 
-async function remove(bugId) {
+async function remove(bugId, loggedinUser) {
   try {
     const bugIdx = bugs.findIndex((bug) => bug._id === bugId)
+    if (bugIdx < 0) throw `Cant find bug with _id ${bugId}`
+
+    const bug = bugs[bugIdx]
+    if (bug.creator._id !== loggedinUser._id)
+      throw "Unauthorized - cannot remove bug"
+
     bugs.splice(bugIdx, 1)
     _saveBugsToFile()
   } catch (error) {
@@ -79,11 +85,16 @@ async function remove(bugId) {
   }
 }
 
-async function save(bugToSave) {
+async function save(bugToSave, loggedinUser) {
   try {
     if (bugToSave._id) {
       const idx = bugs.findIndex((bug) => bug._id === bugToSave._id)
       if (idx < 0) throw `Cant find bug with _id ${bugToSave._id}`
+
+      const bug = bugs[idx]
+      if (bug.creator._id !== loggedinUser._id)
+        throw "Unauthorized - cannot edit bug"
+
       bugs[idx] = { ...bugs[idx], ...bugToSave }
     } else {
       bugToSave._id = utilService.makeId()
