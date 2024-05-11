@@ -1,4 +1,4 @@
-import { authService } from "../auth/auth.service.js"
+// import { authService } from "../auth/auth.service.js"
 import { bugService } from "./bug.service.js"
 
 export async function getBugs(req, res) {
@@ -14,9 +14,6 @@ export async function getBugs(req, res) {
 
 export async function removeBug(req, res) {
   const { bugId } = req.params
-  const loggedinUser = authService.validateLoginToken(req.cookies.loginToken)
-  if (!loggedinUser)
-    return res.status(401).send("Not authenticated - can not remove bug")
 
   try {
     await bugService.remove(bugId, loggedinUser)
@@ -29,9 +26,6 @@ export async function removeBug(req, res) {
 export async function updateBug(req, res) {
   const { title, severity, description } = req.body
   const bugId = req.params.bugId
-  const loggedinUser = authService.validateLoginToken(req.cookies.loginToken)
-  if (!loggedinUser)
-    return res.status(401).send("Not authenticated - can not update bug")
 
   try {
     const bugToSave = {
@@ -50,9 +44,6 @@ export async function updateBug(req, res) {
 
 export async function addBug(req, res) {
   const { title, severity, description } = req.body
-  const loggedinUser = authService.validateLoginToken(req.cookies.loginToken)
-  if (!loggedinUser)
-    return res.status(401).send("Unauthorize - can not add bug")
 
   try {
     const bugToSave = {
