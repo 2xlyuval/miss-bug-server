@@ -3,7 +3,8 @@ import bcrypt from "bcrypt"
 
 import { userService } from "../user/user.service.js"
 
-const cryptr = new Cryptr("secret key")
+//Q rhy do  need the || "secret?
+const cryptr = new Cryptr(process.env.CRYPTR_SECRET || "secretKey")
 
 export const authService = {
   signup,
