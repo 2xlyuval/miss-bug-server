@@ -29,7 +29,7 @@
   {
     "fullName": "admin",
     "userName": "admin",
-    "password": "admin",
+    "password": "$2a$10$6PMxVi5S8CLfIIRVPdfpFuC4c/vtiFQk0YxyTqhGGKF8hCNtKANxu",
     "_id": "bwJ40i",
     "createdAt": 1715280362719,
     "score": 100,
