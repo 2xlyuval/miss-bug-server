@@ -7,8 +7,8 @@ export async function getBugs(req, res) {
   try {
     const bugs = await bugService.query(filterBy)
     res.send(bugs)
-  } catch (error) {
-    res.status(400).send(`Could'nt get bugs`)
+  } catch (err) {
+    res.status(400).send(`Could'nt get bugs ${err}`)
   }
 }
 
@@ -16,7 +16,7 @@ export async function removeBug(req, res) {
   const { bugId } = req.params
 
   try {
-    await bugService.remove(bugId, loggedinUser)
+    await bugService.remove(bugId, req.loggedinUser)
     res.send("bug deleted")
   } catch (err) {
     res.status(400).send(`Could'nt remove bug: ${err}`)
@@ -35,7 +35,7 @@ export async function updateBug(req, res) {
       description,
     }
 
-    const savedBug = await bugService.save(bugToSave, loggedinUser)
+    const savedBug = await bugService.save(bugToSave, req.loggedinUser)
     res.send(savedBug)
   } catch (err) {
     res.status(400).send(`Could'nt save bug: ${err}`)
@@ -56,10 +56,10 @@ export async function addBug(req, res) {
       },
     }
 
-    const savedBug = await bugService.save(bugToSave, loggedinUser)
+    const savedBug = await bugService.save(bugToSave, req.loggedinUser)
     res.send(savedBug)
-  } catch (error) {
-    res.status(400).send(`Could'nt save bug`)
+  } catch (err) {
+    res.status(400).send(`Could'nt save bug ${err}`)
   }
 }
 

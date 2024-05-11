@@ -134,16 +134,5 @@
             "_id": "6iieS1",
             "fullName": "Yuval Mor"
         }
-    },
-    {
-        "title": "new bug 3",
-        "severity": 1,
-        "description": "some new bug 2",
-        "creator": {
-            "_id": "6iieS1",
-            "fullName": "Yuval Mor"
-        },
-        "_id": "D8tYl9",
-        "createdAt": 1715329815875
     }
 ]
