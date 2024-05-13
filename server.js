@@ -3,7 +3,7 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 
 const app = express()
-// Q - i add port to env file || package.json and i try to delete the ||
+
 const port = process.env.PORT || 3030
 
 const corsOptions = {

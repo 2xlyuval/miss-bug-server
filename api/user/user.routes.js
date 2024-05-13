@@ -4,7 +4,6 @@ import { requireAdmin } from "../../middlewares/requireAuth.middleware.js"
 
 const router = express.Router()
 
-// Q - saveUser function
 router.get("/", getUsers)
 router.get("/:userId", getUser)
 router.delete("/:userId", requireAdmin, removeUser)
