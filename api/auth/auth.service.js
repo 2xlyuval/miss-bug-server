@@ -49,6 +49,11 @@ async function signup(credentials) {
     throw new Error("Missing details")
   }
 
+  const userExists = await userService.getByUserName(userName)
+  if (userExists) {
+    throw new Error("User already exists")
+  }
+
   const saltRounds = 10
   const hash = await bcrypt.hash(password, saltRounds)
   const user = userService.save({ ...credentials, password: hash })
@@ -67,6 +72,6 @@ function validateLoginToken(token) {
     const loggedinUser = JSON.parse(json)
     return loggedinUser
   } catch (err) {
-    return null
+    throw new Error("Invalid token")
   }
 }
