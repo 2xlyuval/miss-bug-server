@@ -1,7 +1,20 @@
 import { userService } from "./user.service.js"
 
+export async function getUser(req, res) {
+  try {
+    const userId = req.params.userId
+    const user = await userService.getById(userId)
+    res.send(user)
+  } catch (error) {
+    res.status(400).send(`Could'nt get user`)
+  }
+}
+
 export async function getUsers(req, res) {
-  const filterBy = req.query
+  const filterBy = {
+    txt: req.query?.txt || "",
+    score: +req.query?.score || 0,
+  }
 
   try {
     const users = await userService.query(filterBy)
@@ -21,7 +34,7 @@ export async function removeUser(req, res) {
   }
 }
 
-export async function saveUser(req, res) {
+export async function updateUser(req, res) {
   const userToSave = req.body
   userToSave.score = +userToSave.score
 
@@ -30,15 +43,5 @@ export async function saveUser(req, res) {
     res.send(savedUser)
   } catch (error) {
     res.status(400).send(`Could'nt save user`)
-  }
-}
-
-export async function getUser(req, res) {
-  try {
-    const userId = req.params.userId
-    const user = await userService.getById(userId)
-    res.send(user)
-  } catch (error) {
-    res.status(400).send(`Could'nt get user`)
   }
 }

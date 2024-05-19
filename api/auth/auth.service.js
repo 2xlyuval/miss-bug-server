@@ -20,11 +20,9 @@ async function login(credentials) {
   }
 
   const user = await userService.getByUserName(userName)
-
   if (!user) {
     throw new Error("Invalid username")
   }
-
   // un comment to validate password
   const match = await bcrypt.compare(password, user.password)
   if (!match) {
@@ -32,7 +30,7 @@ async function login(credentials) {
   }
 
   const minUser = {
-    _id: user._id,
+    _id: user._id.toString(),
     fullName: user.fullName,
     userName: user.userName,
     score: user.score,
@@ -56,7 +54,7 @@ async function signup(credentials) {
 
   const saltRounds = 10
   const hash = await bcrypt.hash(password, saltRounds)
-  const user = userService.save({ ...credentials, password: hash })
+  const user = userService.add({ ...credentials, password: hash })
   return user
 }
 
