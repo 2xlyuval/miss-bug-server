@@ -1,5 +1,6 @@
-// import { authService } from "../auth/auth.service.js"
 import { bugService } from "./bug.service.js"
+
+//TODO: add authorization
 
 export async function getBugs(req, res) {
   const filterBy = req.query
@@ -16,7 +17,7 @@ export async function removeBug(req, res) {
   const { bugId } = req.params
 
   try {
-    await bugService.remove(bugId, req.loggedinUser)
+    await bugService.remove(bugId)
     res.send("bug deleted")
   } catch (err) {
     res.status(400).send(`Could'nt remove bug: ${err}`)
@@ -35,7 +36,7 @@ export async function updateBug(req, res) {
       description,
     }
 
-    const savedBug = await bugService.save(bugToSave, req.loggedinUser)
+    const savedBug = await bugService.save(bugToSave)
     res.send(savedBug)
   } catch (err) {
     res.status(400).send(`Could'nt save bug: ${err}`)
@@ -44,6 +45,7 @@ export async function updateBug(req, res) {
 
 export async function addBug(req, res) {
   const { title, severity, description } = req.body
+  const loggedinUser = req.loggedinUser
 
   try {
     const bugToSave = {
@@ -52,11 +54,11 @@ export async function addBug(req, res) {
       description,
       creator: {
         _id: loggedinUser._id,
-        fullName: loggedinUser.useName,
+        fullName: loggedinUser.fullName,
       },
     }
 
-    const savedBug = await bugService.save(bugToSave, req.loggedinUser)
+    const savedBug = await bugService.save(bugToSave)
     res.send(savedBug)
   } catch (err) {
     res.status(400).send(`Could'nt save bug ${err}`)

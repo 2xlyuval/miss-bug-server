@@ -1,8 +1,10 @@
-import fs from "fs"
-import { utilService } from "../../services/util.service.js"
+import { dbService } from "../../services/db.service.js"
+import mongodb from "mongodb"
+const { ObjectId } = mongodb
 
-const bugs = utilService.readJsonFile("./data/bug.json")
+const collectionName = "bug"
 const PAGE_SIZE = 2
+
 export const bugService = {
   query,
   getById,
@@ -11,50 +13,22 @@ export const bugService = {
 }
 
 async function query(filterBy = {}) {
-  let filteredBugs = [...bugs]
+  const criteria = _buildCriteria(filterBy)
   try {
-    if (filterBy.txt) {
-      const regExp = new RegExp(filterBy.txt, "i")
-      filteredBugs = filteredBugs.filter(
-        (bug) => regExp.test(bug.title) || regExp.test(bug.description)
-      )
-    }
+    const collection = await dbService.getCollection(collectionName)
+    const bugCursor = await collection.find(criteria)
 
-    if (filterBy.severity) {
-      filterBy.severity = +filterBy.severity
-
-      filteredBugs = filteredBugs.filter(
-        (bug) => bug.severity >= filterBy.severity
-      )
-    }
-
-    if (filterBy.labels) {
-      filteredBugs = filteredBugs.filter((bug) =>
-        bug.labels.some((label) => label === filterBy.labels)
-      )
-    }
-
-    if (filterBy.createdBy) {
-      filteredBugs = filteredBugs.filter(
-        (bug) => bug.creator._id === filterBy.createdBy
-      )
-    }
-
-    //sort by title / severity / createdAt
     if (filterBy.sortBy) {
-      // if there is filterBy.ascending, convert it to boolean
-      if (filterBy.ascending === "true") filterBy.ascending = true
-      else if (filterBy.ascending === "false") filterBy.ascending = false
-
-      _sortBugs(filteredBugs, filterBy.sortBy, filterBy.ascending)
+      bugCursor.sort({ [filterBy.sortBy]: 1 })
     }
 
     if (filterBy.pageIdx !== undefined) {
       const startIdx = filterBy.pageIdx * PAGE_SIZE
-      filteredBugs = filteredBugs.slice(startIdx, startIdx + PAGE_SIZE)
+      bugCursor.skip(startIdx).limit(PAGE_SIZE)
     }
 
-    return filteredBugs
+    const bugs = await bugCursor.toArray()
+    return bugs
   } catch (error) {
     throw error
   }
@@ -62,86 +36,57 @@ async function query(filterBy = {}) {
 
 async function getById(bugId) {
   try {
-    const bug = bugs.find((bug) => bug._id === bugId)
+    const collection = await dbService.getCollection(collectionName)
+    const bug = await collection.findOne({
+      _id: ObjectId.createFromHexString(bugId),
+    })
     return bug
   } catch (error) {
     throw error
   }
 }
 
-async function remove(bugId, loggedinUser) {
+async function remove(bugId) {
   try {
-    const bugIdx = bugs.findIndex((bug) => bug._id === bugId)
-    if (bugIdx < 0) throw `Cant find bug with _id ${bugId}`
-
-    const bug = bugs[bugIdx]
-    if (!loggedinUser.isAdmin && bug.creator._id !== loggedinUser._id)
-      throw "Unauthorized - cannot remove bug"
-
-    bugs.splice(bugIdx, 1)
-    _saveBugsToFile()
+    const collection = await dbService.getCollection(collectionName)
+    await collection.deleteOne({ _id: ObjectId.createFromHexString(bugId) })
   } catch (error) {
     throw error
   }
 }
 
-async function save(bugToSave, loggedinUser) {
+async function save(bugToSave) {
   try {
+    const collection = await dbService.getCollection(collectionName)
     if (bugToSave._id) {
-      const idx = bugs.findIndex((bug) => bug._id === bugToSave._id)
-      if (idx < 0) throw `Cant find bug with _id ${bugToSave._id}`
-
-      const bug = bugs[idx]
-      if (!loggedinUser.isAdmin && bug.creator._id !== loggedinUser._id)
-        throw "Unauthorized - cannot edit bug"
-
-      bugs[idx] = { ...bugs[idx], ...bugToSave }
+      bugToSave._id = ObjectId.createFromHexString(bugToSave._id)
+      await collection.updateOne({ _id: bugToSave._id }, { $set: bugToSave })
     } else {
-      bugToSave._id = utilService.makeId()
-      bugToSave.createdAt = Date.now()
-      bugs.push(bugToSave)
+      await collection.insertOne(bugToSave)
     }
-    await _saveBugsToFile()
     return bugToSave
   } catch (error) {
     throw error
   }
 }
 
-function _saveBugsToFile(path = "./data/bug.json") {
-  return new Promise((resolve, reject) => {
-    const data = JSON.stringify(bugs, null, 4)
-    fs.writeFile(path, data, (err) => {
-      if (err) return reject(err)
-      resolve()
-    })
-  })
-}
-
-function _sortBugs(bugs, sortBy, ascending = true) {
-  if (sortBy === "title") {
-    bugs.sort((a, b) => {
-      const bugTitleA = a.title.toUpperCase()
-      const bugTitleB = b.title.toUpperCase()
-
-      if (bugTitleA < bugTitleB) {
-        return ascending ? -1 : 1
-      }
-      if (bugTitleA > bugTitleB) {
-        return ascending ? 1 : -1
-      }
-      return 0
-    })
-  } else if (sortBy === "severity") {
-    bugs.sort((a, b) =>
-      ascending ? a.severity - b.severity : b.severity - a.severity
-    )
-  } else if (sortBy === "createdAt") {
-    ascending = false
-    bugs.sort((a, b) =>
-      ascending ? a.createdAt - b.createdAt : b.createdAt - a.createdAt
-    )
-  } else {
-    console.error('Invalid sorting type. Please use "title" or "severity".')
+function _buildCriteria(filterBy) {
+  const criteria = {}
+  if (filterBy.txt) {
+    // or by title or by description
+    criteria.$or = [
+      { title: { $regex: filterBy.txt, $options: "i" } },
+      { description: { $regex: filterBy.txt, $options: "i" } },
+    ]
   }
+  if (filterBy.severity) {
+    criteria.severity = { $gte: +filterBy.severity }
+  }
+  if (filterBy.labels) {
+    criteria.labels = { $in: [filterBy.labels] }
+  }
+  if (filterBy.createdBy) {
+    criteria["creator._id"] = filterBy.createdBy
+  }
+  return criteria
 }

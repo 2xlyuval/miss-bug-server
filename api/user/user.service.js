@@ -20,7 +20,7 @@ async function query(filterBy = {}) {
     let filteredUsers = await collection.find(criteria).toArray()
 
     filteredUsers = filteredUsers.map((user) => {
-      user.createdAt = new ObjectId(user._id).getTimestamp()
+      user.createdAt = ObjectId.createFromHexString(user._id).getTimestamp()
       delete user.password
       return user
     })
@@ -31,11 +31,12 @@ async function query(filterBy = {}) {
   }
 }
 
-//TODO: fix new ObjectId(userId)
 async function getById(userId) {
   try {
     const collection = await dbService.getCollection(collectionName)
-    const user = await collection.findOne({ _id: new ObjectId(userId) })
+    const user = await collection.findOne({
+      _id: ObjectId.createFromHexString(userId),
+    })
     return user
   } catch (error) {
     throw error
@@ -55,7 +56,7 @@ async function getByUserName(userName) {
 async function remove(userId) {
   try {
     const collection = await dbService.getCollection(collectionName)
-    await collection.deleteOne({ _id: new ObjectId(userId) })
+    await collection.deleteOne({ _id: ObjectId.createFromHexString(userId) })
   } catch (error) {
     throw error
   }
@@ -82,7 +83,7 @@ async function add(user) {
 async function update(user) {
   console.log("user", user)
   const userToSave = {
-    _id: new ObjectId(user._id),
+    _id: ObjectId.createFromHexString(user._id),
     userName: user.userName,
     fullName: user.fullName,
     score: +user.score,
