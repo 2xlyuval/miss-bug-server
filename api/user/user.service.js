@@ -1,6 +1,6 @@
 import { dbService } from "../../services/db.service.js"
 import mongodb from "mongodb"
-let { ObjectId } = mongodb
+const { ObjectId } = mongodb
 
 const collectionName = "user"
 
@@ -31,6 +31,7 @@ async function query(filterBy = {}) {
   }
 }
 
+//TODO: fix new ObjectId(userId)
 async function getById(userId) {
   try {
     const collection = await dbService.getCollection(collectionName)
@@ -54,7 +55,7 @@ async function getByUserName(userName) {
 async function remove(userId) {
   try {
     const collection = await dbService.getCollection(collectionName)
-    await collection.deleteOne({ _id: ObjectId(userId) })
+    await collection.deleteOne({ _id: new ObjectId(userId) })
   } catch (error) {
     throw error
   }
@@ -77,13 +78,14 @@ async function add(user) {
   }
 }
 
+//TODO: if the user don't want to change his full name? so i get null
 async function update(user) {
+  console.log("user", user)
   const userToSave = {
-    _id: ObjectId(user._id),
+    _id: new ObjectId(user._id),
     userName: user.userName,
     fullName: user.fullName,
-    password: user.password,
-    score: user.score,
+    score: +user.score,
   }
   try {
     const collection = await dbService.getCollection(collectionName)

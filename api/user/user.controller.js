@@ -36,10 +36,8 @@ export async function removeUser(req, res) {
 
 export async function updateUser(req, res) {
   const userToSave = req.body
-  userToSave.score = +userToSave.score
-
   try {
-    const savedUser = await userService.save(userToSave)
+    const savedUser = await userService.update(userToSave)
     res.send(savedUser)
   } catch (error) {
     res.status(400).send(`Could'nt save user`)
