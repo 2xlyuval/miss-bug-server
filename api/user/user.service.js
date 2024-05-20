@@ -20,7 +20,7 @@ async function query(filterBy = {}) {
     let filteredUsers = await collection.find(criteria).toArray()
 
     filteredUsers = filteredUsers.map((user) => {
-      user.createdAt = ObjectId(user._id).getTimestamp()
+      user.createdAt = new ObjectId(user._id).getTimestamp()
       delete user.password
       return user
     })
