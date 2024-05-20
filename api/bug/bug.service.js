@@ -18,6 +18,7 @@ async function query(filterBy = {}) {
     const collection = await dbService.getCollection(collectionName)
     const bugCursor = await collection.find(criteria)
 
+    //TODO: add sorting and pagination in the _buildCriteria function
     if (filterBy.sortBy) {
       bugCursor.sort({ [filterBy.sortBy]: 1 })
     }

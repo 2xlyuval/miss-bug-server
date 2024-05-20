@@ -2,6 +2,8 @@ import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 
+//TODO: add production condition
+
 const app = express()
 
 const port = process.env.PORT || 3030
@@ -25,10 +27,12 @@ app.use(express.json())
 import { bugRoutes } from "./api/bug/bug.routes.js"
 import { userRoutes } from "./api/user/user.routes.js"
 import { authRoutes } from "./api/auth/auth.routes.js"
+import { msgRoutes } from "./api/msg/msg.routes.js"
 
 app.use("/api/bug", bugRoutes)
 app.use("/api/user", userRoutes)
 app.use("/api/auth", authRoutes)
+app.use("/api/msg", msgRoutes)
 
 // app.get("/**", (req, res) => {
 //   res.sendFile(path.resolve("public/index.html"))
