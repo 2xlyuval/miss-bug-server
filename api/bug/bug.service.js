@@ -18,7 +18,6 @@ async function query(filterBy = {}) {
     const collection = await dbService.getCollection(collectionName)
     const bugCursor = await collection.find(criteria)
 
-    //TODO: add sorting and pagination in the _buildCriteria function
     if (filterBy.sortBy) {
       bugCursor.sort({ [filterBy.sortBy]: 1 })
     }
@@ -47,6 +46,7 @@ async function getById(bugId) {
   }
 }
 
+// Q - if i want only admin or the creator so i need to get bug first?
 async function remove(bugId) {
   try {
     const collection = await dbService.getCollection(collectionName)

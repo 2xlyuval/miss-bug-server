@@ -1,7 +1,5 @@
 import { msgService } from "./msg.service.js"
 
-//TODO: add authorization
-
 export async function getMsgs(req, res) {
   const filterBy = req.query
 

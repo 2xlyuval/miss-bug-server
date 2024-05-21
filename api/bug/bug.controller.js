@@ -1,7 +1,5 @@
 import { bugService } from "./bug.service.js"
 
-//TODO: add authorization
-
 export async function getBugs(req, res) {
   const filterBy = req.query
 
