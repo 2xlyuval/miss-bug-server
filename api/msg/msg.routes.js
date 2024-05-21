@@ -7,7 +7,7 @@ import {
 
 const router = express.Router()
 
-// router.get("/", getMsgs)
+router.get("/", getMsgs)
 router.delete("/:msgId", requireAdmin, removeMsg)
 router.post("/", requireAuth, addMsg)
 
