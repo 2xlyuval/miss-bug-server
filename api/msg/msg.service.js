@@ -14,40 +14,7 @@ async function query(filterBy = {}) {
   const criteria = _buildCriteria(filterBy)
   try {
     const collection = await dbService.getCollection(collectionName)
-    const msgCursor = await collection.aggregate([
-      {
-        $match: criteria,
-      },
-      {
-        $lookup: {
-          from: "user",
-          localField: "byUserId",
-          foreignField: "_id",
-          as: "byUser",
-        },
-      },
-      {
-        $unwind: "$byUser",
-      },
-      {
-        $lookup: {
-          from: "bug",
-          localField: "aboutBugId",
-          foreignField: "_id",
-          as: "aboutBug",
-        },
-      },
-      {
-        $unwind: "$aboutBug",
-      },
-      {
-        $project: {
-          txt: 1,
-          byUser: { userName: 1 },
-          aboutBug: { title: 1, description: 1 },
-        },
-      },
-    ])
+    const msgCursor = await collection.aggregate(_aggregateMsgs(criteria))
     return msgCursor.toArray()
   } catch (error) {
     throw error
@@ -74,7 +41,10 @@ async function add(msg) {
       byUserId: ObjectId.createFromHexString(msg.byUserId),
     }
     const collection = await dbService.getCollection(collectionName)
-    const savedMsg = await collection.insertOne(msgToAdd)
+    await collection.insertOne(msgToAdd)
+    const savedMsg = await collection
+      .aggregate(_aggregateMsgs({ _id: msgToAdd._id }))
+      .next()
     return savedMsg
   } catch (error) {
     throw error
@@ -93,4 +63,41 @@ function _buildCriteria(filterBy) {
     criteria.txt = { $regex: filterBy.txt, $options: "i" }
   }
   return criteria
+}
+
+function _aggregateMsgs(criteria = {}) {
+  return [
+    {
+      $match: criteria,
+    },
+    {
+      $lookup: {
+        from: "user",
+        localField: "byUserId",
+        foreignField: "_id",
+        as: "byUser",
+      },
+    },
+    {
+      $unwind: "$byUser",
+    },
+    {
+      $lookup: {
+        from: "bug",
+        localField: "aboutBugId",
+        foreignField: "_id",
+        as: "aboutBug",
+      },
+    },
+    {
+      $unwind: "$aboutBug",
+    },
+    {
+      $project: {
+        txt: 1,
+        byUser: { _id: 1, userName: 1 },
+        aboutBug: { _id: 1, title: 1, description: 1, severity: 1 },
+      },
+    },
+  ]
 }
