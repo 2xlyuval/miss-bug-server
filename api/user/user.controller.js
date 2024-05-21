@@ -39,7 +39,7 @@ export async function updateUser(req, res) {
   try {
     const savedUser = await userService.update(userToSave)
     res.send(savedUser)
-  } catch (error) {
-    res.status(400).send(`Could'nt save user`)
+  } catch (err) {
+    res.status(400).send(`${err} - Could'nt save user `)
   }
 }

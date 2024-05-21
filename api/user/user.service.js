@@ -1,3 +1,4 @@
+import { asyncLocalStorage } from "../../services/als.service.js"
 import { dbService } from "../../services/db.service.js"
 import mongodb from "mongodb"
 const { ObjectId } = mongodb
@@ -79,9 +80,13 @@ async function add(user) {
   }
 }
 
-//TODO: if the user don't want to change his full name? so i get null
 async function update(user) {
-  console.log("user", user)
+  const { loggedinUser } = asyncLocalStorage.getStore()
+  //only admin and the user himself can update his details
+  if (!loggedinUser.isAdmin && loggedinUser._id !== user._id) {
+    throw new Error("Not authorized")
+  }
+
   const userToSave = {
     _id: ObjectId.createFromHexString(user._id),
     userName: user.userName,
